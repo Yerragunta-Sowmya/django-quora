@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ question.title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+
+        h2, h3 {
+            margin-bottom: 15px;
+        }
+
+        .answer-box {
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin: 15px 0 5px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .meta {
+            font-size: 14px;
+            color: #666;
+        }
+
+        form {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>{{ question.title }}</h2>
+        <p>{{ question.body }}</p>
+        <p class="meta">Posted by: {{ question.user.first_name }} {{ question.user.last_name }}</p>
+
+        <h3>Answers:</h3>
+        {% for answer in question.answers.all %}
+            <div class="answer-box">
+                <p>{{ answer.body|linebreaks }}</p>
+                <p class="meta">By: {{ answer.user.first_name }} {{ answer.user.last_name }} | Likes: {{ answer.likes }}</p>
+                <form action="{% url 'like_answer' answer.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Like</button>
+                </form>
+            </div>
+        {% empty %}
+            <p>No answers yet. Be the first to answer!</p>
+        {% endfor %}
+
+        <h3>Your Answer:</h3>
+        <form method="post">
+            {% csrf_token %}
+            <label for="{{ form.body.id_for_label }}">Body:</label>
+            {{ form.body }}
+            <button type="submit">Submit Answer</button>
+        </form>
+
+        <div class="back-link">
+            <p><a href="{% url 'home' %}">Back to Home</a></p>
+        </div>
+    </div>
+</body>
+</html>

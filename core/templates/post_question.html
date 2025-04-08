@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Post a Question</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 30px;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 25px;
+            max-width: 600px;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        a {
+            color: #007bff;
+        }
+
+        .back-link {
+            margin-top: 15px;
+            display: block;
+            text-align: center;
+        }
+
+        .back-link a {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Post a Question</h2>
+        <form method="post">
+            {% csrf_token %}
+            
+            <label for="{{ form.title.id_for_label }}">Title:</label>
+            {{ form.title }}
+
+            <label for="{{ form.body.id_for_label }}">Body:</label>
+            {{ form.body }}
+
+            <button type="submit">Post</button>
+        </form>
+
+        <p class="back-link"><a href="{% url 'home' %}">Back to Home</a></p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 30px 40px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 14px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 35px 10px 10px; /* space for the icon */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: black;
+        } 
+
+        .errorlist {
+            color: red;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Register</h2>
+        <form method="post">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div>
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    
+                    <div class="input-wrapper">
+                        {{ field }}
+                        {% if field.name == 'password1' or field.name == 'password2' %}
+                            <span class="toggle-password" onclick="togglePassword('{{ field.id_for_label }}', this)">
+                                <i class="fa-solid fa-eye"></i>
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    {% if field.errors %}
+                        <div class="errorlist">{{ field.errors.as_text|linebreaksbr }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit">Register</button>
+        </form>
+
+        <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+    </div>
+
+    <script>
+        function togglePassword(fieldId, iconWrapper) {
+            const input = document.getElementById(fieldId);
+            const icon = iconWrapper.querySelector('i');
+
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = "password";
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+    </script>
+</body>
+</html>
